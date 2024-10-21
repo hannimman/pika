@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="refresh" content="0; URL=/" />
     <title>Page Not Found</title>
 
     <style media="screen">
@@ -20,6 +21,11 @@
         body { border-top: 16px solid #ffa100; }
       }
     </style>
+	<script>
+      setTimeout(function() {
+        window.location.href = "/";
+      }, 10);
+    </script>
   </head>
   <body>
     <div id="message">
