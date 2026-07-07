@@ -2,3 +2,13 @@ html, body, #root {
   margin: 0;
   height: 100%;
 }
+
+/* astryx SideNav: make section headers read as labels, clearly distinct
+   from the (brighter) nav item rows. Unlayered → wins over astryx's layered styles. */
+.astryx-side-nav-section span[id$='-title'] {
+  color: var(--color-text-green);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.66rem;
+  font-weight: 700;
+}
