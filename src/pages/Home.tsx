@@ -4,7 +4,7 @@ import './Home.css'
 
 const TOOLS = [
   { to: '/quote', emoji: '❝', title: '따옴표', desc: '따옴표 마법사', tag: 'TOOL' },
-  { to: '/oracle', emoji: '🔮', title: 'Oracle 변수', desc: 'Oracle 바인드 변수 치환기', tag: 'IFRAME' },
+  { to: '/oracle', emoji: '🔮', title: '변수', desc: 'Oracle 바인드 변수 치환기', tag: 'IFRAME' },
   { to: '/tetris', emoji: '💫', title: '벽돌', desc: '벽돌공장', tag: 'GAME' },
 ]
 

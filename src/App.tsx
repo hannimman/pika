@@ -13,7 +13,7 @@ import { HomeIcon, QuoteIcon, BlocksIcon } from './icons'
 const NAV = [
   { path: '/', label: '홈', icon: HomeIcon, el: <Home /> },
   { path: '/quote', label: '따옴표', icon: QuoteIcon, el: <Quote /> },
-  { path: '/oracle', label: 'Oracle 변수', icon: 'wrench', el: <Embed src="https://hannimman.github.io/oracle-var-resolver/" title="oracle-var-resolver" /> },
+  { path: '/oracle', label: '변수', icon: 'wrench', el: <Embed src="https://hannimman.github.io/oracle-var-resolver/" title="oracle-var-resolver" /> },
   { path: '/tetris', label: '벽돌', icon: BlocksIcon, el: <Tetris /> },
 ]
 
@@ -35,7 +35,7 @@ export default function App() {
       contentPadding={0}
       sideNav={
         <SideNav collapsible header={<SideNavHeading heading="pika pika ⚡" headingHref="#/" />}>
-          <SideNavSection title="메뉴">
+          <SideNavSection title="누르세요">
             {NAV.map((n) => (
               <SideNavItem
                 key={n.path}
