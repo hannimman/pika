@@ -24,23 +24,17 @@ export function makeOutput(input: string, opts: OutputOptions): { text: string; 
   const splitter = opts.useNewline ? '\n' : ','
   const items = str.split(splitter).filter(Boolean)
 
-  const quoted = items.map((x) => `${opts.quoteChar}${x}${opts.quoteChar}\n`)
-  let result = quoted.join(',').replace(/\s+$/, '')
-  if (!opts.withComma) result = result.replace(/,/g, '')
+  const q = opts.quoteChar
+  // leading-comma SQL style: continuation lines start with ", " (comma + space)
+  const text = items.map((x) => `${q}${x}${q}`).join(opts.withComma ? '\n, ' : '\n')
 
-  return { text: result, count: items.length }
+  return { text, count: items.length }
 }
 
-// OUTPUT → CUSTOM(대/소문자 변환)
+// OUTPUT → CUSTOM(대/소문자 변환) — output is already formatted, just change case
 export function makeCustom(output: string, opts: CustomOptions): string {
   if (!output) return ''
-
-  const cleaned = output.split('\n').map((line) => line.replace(',', '') + '\n')
-  let result = cleaned.join(',').replace(/\s+$/, '')
-  result = opts.upper ? result.toUpperCase() : result.toLowerCase()
-  if (!opts.withComma) result = result.replace(/,/g, '')
-
-  return result
+  return opts.upper ? output.toUpperCase() : output.toLowerCase()
 }
 
 const DIGIT_EMOJI = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣']
