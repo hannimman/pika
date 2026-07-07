@@ -1,0 +1,141 @@
+/* One screen, no vertical scroll: fill the AppShell content height. */
+.quote {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+  /* matcha theme is scoped to this page (data-astryx-theme="matcha") */
+  background: var(--color-background-body);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
+}
+
+.quote-pika {
+  flex: 0 0 110px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #7fb069;
+}
+.pika-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.quote-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.quote-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: 8px;
+}
+
+/* Fixed 2-row header (title row / controls row) with a constant height, so all
+   three columns' textareas start at the same Y and share the same height. */
+.quote-head {
+  flex: 0 0 auto;
+  height: 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.quote-head-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 30px;
+}
+.quote-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.quote-head-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px 14px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.quote-title {
+  margin: 0;
+  font-family: var(--font-family-body);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  /* matcha-green neon glow so the section titles pop */
+  color: var(--color-text-green);
+  text-shadow:
+    0 0 4px color-mix(in oklab, var(--color-text-green) 75%, transparent),
+    0 0 10px color-mix(in oklab, var(--color-text-green) 55%, transparent),
+    0 0 20px color-mix(in oklab, var(--color-text-green) 40%, transparent);
+  animation: quote-neon 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes quote-neon {
+  from {
+    text-shadow:
+      0 0 4px color-mix(in oklab, var(--color-text-green) 75%, transparent),
+      0 0 10px color-mix(in oklab, var(--color-text-green) 55%, transparent),
+      0 0 20px color-mix(in oklab, var(--color-text-green) 40%, transparent);
+  }
+  to {
+    text-shadow:
+      0 0 6px color-mix(in oklab, var(--color-text-green) 90%, transparent),
+      0 0 16px color-mix(in oklab, var(--color-text-green) 70%, transparent),
+      0 0 30px color-mix(in oklab, var(--color-text-green) 50%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quote-title { animation: none; }
+}
+.quote-count {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.quote-bolt {
+  color: var(--color-text-green);
+  font-size: 1.1rem;
+  width: 1.2em;
+  text-align: center;
+}
+
+/* Make the astryx TextArea fill the column: flex the whole field→textarea chain. */
+.quote-col > .astryx-field {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.quote-col > .astryx-field > div {
+  /* content wrapper after the hidden label */
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.quote-col .astryx-textarea {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.quote-col .astryx-textarea > textarea {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  resize: none;
+}

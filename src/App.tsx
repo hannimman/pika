@@ -6,12 +6,13 @@ import { Banner } from '@astryxdesign/core/Banner'
 import Home from './pages/Home'
 import Embed from './pages/Embed'
 import Tetris from './pages/Tetris'
+import Quote from './pages/Quote/QuotePage'
 import { HomeIcon, QuoteIcon, BlocksIcon } from './icons'
 
 // One nav table drives both the menu and the routes.
 const NAV = [
   { path: '/', label: '홈', icon: HomeIcon, el: <Home /> },
-  { path: '/quote', label: '따옴표', icon: QuoteIcon, el: <Embed src="https://hannimman.github.io/QuoteMaker/" title="QuoteMaker" /> },
+  { path: '/quote', label: '따옴표', icon: QuoteIcon, el: <Quote /> },
   { path: '/oracle', label: 'Oracle 변수', icon: 'wrench', el: <Embed src="https://hannimman.github.io/oracle-var-resolver/" title="oracle-var-resolver" /> },
   { path: '/tetris', label: '벽돌', icon: BlocksIcon, el: <Tetris /> },
 ]
