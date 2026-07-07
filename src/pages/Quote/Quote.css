@@ -106,6 +106,9 @@
 .quote-count {
   font-size: 0.8rem;
   font-weight: 600;
+  /* no neon on the emoji count — the glow made it unreadable */
+  text-shadow: none;
+  animation: none;
 }
 .quote-bolt {
   color: var(--color-text-green);
