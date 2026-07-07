@@ -6,13 +6,14 @@ import { Banner } from '@astryxdesign/core/Banner'
 import Home from './pages/Home'
 import Embed from './pages/Embed'
 import Tetris from './pages/Tetris'
+import { HomeIcon, QuoteIcon, BlocksIcon } from './icons'
 
 // One nav table drives both the menu and the routes.
 const NAV = [
-  { path: '/', label: '홈', el: <Home /> },
-  { path: '/quote', label: '따옴표', el: <Embed src="https://hannimman.github.io/QuoteMaker/" title="QuoteMaker" /> },
-  { path: '/oracle', label: 'Oracle 변수', el: <Embed src="https://hannimman.github.io/oracle-var-resolver/" title="oracle-var-resolver" /> },
-  { path: '/tetris', label: '벽돌 💫', el: <Tetris /> },
+  { path: '/', label: '홈', icon: HomeIcon, el: <Home /> },
+  { path: '/quote', label: '따옴표', icon: QuoteIcon, el: <Embed src="https://hannimman.github.io/QuoteMaker/" title="QuoteMaker" /> },
+  { path: '/oracle', label: 'Oracle 변수', icon: 'wrench', el: <Embed src="https://hannimman.github.io/oracle-var-resolver/" title="oracle-var-resolver" /> },
+  { path: '/tetris', label: '벽돌', icon: BlocksIcon, el: <Tetris /> },
 ]
 
 export default function App() {
@@ -38,15 +39,16 @@ export default function App() {
               <SideNavItem
                 key={n.path}
                 label={n.label}
+                icon={n.icon}
                 isSelected={pathname === n.path}
                 onClick={() => navigate(n.path)}
               />
             ))}
           </SideNavSection>
 
-          <SideNavSection title="누르지마세요">
-            <SideNavItem label="없음1" onClick={() => setJoke('없음 🚫')} />
-            <SideNavItem label="없음2" onClick={() => setJoke('없음 🚭')} />
+          <SideNavSection title="누르지마세요" subtitle="눌러도 없음">
+            <SideNavItem label="없음1" icon="stop" onClick={() => setJoke('없음 🚫')} />
+            <SideNavItem label="없음2" icon="stop" onClick={() => setJoke('없음 🚭')} />
           </SideNavSection>
         </SideNav>
       }
