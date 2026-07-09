@@ -7,13 +7,15 @@ import Home from './pages/Home'
 import Embed from './pages/Embed'
 import Tetris from './pages/Tetris'
 import Quote from './pages/Quote/QuotePage'
-import { HomeIcon, QuoteIcon, BlocksIcon } from './icons'
+import DQuery from './pages/DQuery/DQueryPage'
+import { HomeIcon, QuoteIcon, BlocksIcon, DbIcon } from './icons'
 
 // One nav table drives both the menu and the routes.
 const NAV = [
   { path: '/', label: '홈', icon: HomeIcon, el: <Home /> },
   { path: '/quote', label: '따옴표', icon: QuoteIcon, el: <Quote /> },
   { path: '/oracle', label: '변수', icon: 'wrench', el: <Embed src="https://hannimman.github.io/oracle-var-resolver/" title="oracle-var-resolver" /> },
+  { path: '/dquery', label: '동적', icon: DbIcon, el: <DQuery /> },
   { path: '/tetris', label: '벽돌', icon: BlocksIcon, el: <Tetris /> },
 ]
 

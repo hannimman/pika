@@ -34,3 +34,11 @@ export const BlocksIcon = (p: SVGProps<SVGSVGElement>) => (
     <rect x="13" y="13" width="8" height="8" rx="1" />
   </svg>
 )
+
+export const DbIcon = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)}>
+    <ellipse cx="12" cy="5" rx="8" ry="3" />
+    <path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
+    <path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" />
+  </svg>
+)
