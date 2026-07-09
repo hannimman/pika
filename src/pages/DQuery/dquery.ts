@@ -5,9 +5,17 @@
 // 입력은 "생 SQL"을 가정한다(이미 변환된 V_SQL||... 코드를 넣으면 이중 변환됨).
 
 export type Style = 'A' | 'B' | 'C'
-// 리터럴 값(문자열) → 변수명. 위치(id)가 아니라 값으로 키를 잡아야
-// 앞쪽에 리터럴이 새로 끼어들어도 변수 매핑이 밀리지 않는다.
-export type Subs = Record<string, string>
+// 치환 항목: 표시용 값 + 변수명. 키는 모드에 따라 달라진다 (subKey 참고).
+export interface Sub {
+  value: string
+  name: string
+}
+export type Subs = Record<string, Sub>
+
+// 치환 키: 그룹 모드면 값(같은 값 전부 묶임), 개별 모드면 출현 위치 id.
+// 그룹이 기본 — 값 기준이라 앞쪽에 리터럴이 끼어들어도 매핑이 안 밀린다.
+export const subKey = (grouping: boolean, id: number, value: string): string =>
+  grouping ? value : String(id)
 
 export interface Part {
   t: 'text' | 'lit'
@@ -110,17 +118,25 @@ const renderLit = (value: string, varName?: string): string =>
 const isBlank = (line: Seg[]): boolean => line.every((seg) => 'text' in seg && seg.text.trim() === '')
 
 // 한 줄의 내부 파트(텍스트 + 클릭 가능한 리터럴), 래핑 없음
-function lineParts(line: Seg[], subs: Subs): Part[] {
+function lineParts(line: Seg[], subs: Subs, grouping: boolean): Part[] {
   return line.map((seg) =>
     'text' in seg
       ? { t: 'text', s: seg.text }
-      : { t: 'lit', id: seg.litId, value: seg.value, s: renderLit(seg.value, subs[seg.value]) },
+      : {
+          t: 'lit',
+          id: seg.litId,
+          value: seg.value,
+          s: renderLit(seg.value, subs[subKey(grouping, seg.litId, seg.value)]?.name),
+        },
   )
 }
 
 // 스타일별로 출력을 "줄" 배열로 조립 (각 줄에 대응 입력줄 src 를 붙여 호버 매핑에 사용)
-export function buildLines(sql: string, opts: { style: Style; varName: string; subs: Subs }): OutLine[] {
-  const { style, varName: v, subs } = opts
+export function buildLines(
+  sql: string,
+  opts: { style: Style; varName: string; subs: Subs; grouping: boolean },
+): OutLine[] {
+  const { style, varName: v, subs, grouping } = opts
   const lines = tokenizeLines(sql)
   const text = (s: string): Part => ({ t: 'text', s })
 
@@ -128,7 +144,7 @@ export function buildLines(sql: string, opts: { style: Style; varName: string; s
     // 단일 문자열: 개행 포함 통짜
     return [
       { src: null, parts: [text(`${v} := '`)] },
-      ...lines.map((segs, i) => ({ src: i, parts: lineParts(segs, subs) })),
+      ...lines.map((segs, i) => ({ src: i, parts: lineParts(segs, subs, grouping) })),
       { src: null, parts: [text(`';`)] },
     ]
   }
@@ -139,7 +155,7 @@ export function buildLines(sql: string, opts: { style: Style; varName: string; s
     // 줄마다 대입
     return body.map(({ segs, i }) => ({
       src: i,
-      parts: [text(`${v} := ${v} || '`), ...lineParts(segs, subs), text(`';`)],
+      parts: [text(`${v} := ${v} || '`), ...lineParts(segs, subs, grouping), text(`';`)],
     }))
   }
 
@@ -148,7 +164,7 @@ export function buildLines(sql: string, opts: { style: Style; varName: string; s
   const indent = ' '.repeat(prefix.length)
   return body.map(({ segs, i }, k) => ({
     src: i,
-    parts: [text(k === 0 ? `${prefix}|| '` : `${indent}|| '`), ...lineParts(segs, subs), text(k === body.length - 1 ? `';` : `'`)],
+    parts: [text(k === 0 ? `${prefix}|| '` : `${indent}|| '`), ...lineParts(segs, subs, grouping), text(k === body.length - 1 ? `';` : `'`)],
   }))
 }
 
