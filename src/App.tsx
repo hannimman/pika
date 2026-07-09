@@ -8,6 +8,7 @@ import Embed from './pages/Embed'
 import Tetris from './pages/Tetris'
 import Quote from './pages/Quote/QuotePage'
 import DQuery from './pages/DQuery/DQueryPage'
+import QR from './pages/QR/QRPage'
 import { HomeIcon, QuoteIcon, BlocksIcon, DbIcon } from './icons'
 
 // One nav table drives both the menu and the routes.
@@ -52,6 +53,7 @@ export default function App() {
           <SideNavSection title="누르지마세요" subtitle="눌러도 없음">
             <SideNavItem label="없음1" icon="stop" onClick={() => setJoke('없음 🚫')} />
             <SideNavItem label="없음2" icon="stop" onClick={() => setJoke('없음 🚭')} />
+            <SideNavItem label="없음3" icon="stop" isSelected={pathname === '/qr'} onClick={() => navigate('/qr')} />
           </SideNavSection>
         </SideNav>
       }
@@ -65,6 +67,7 @@ export default function App() {
         {NAV.map((n) => (
           <Route key={n.path} path={n.path} element={n.el} />
         ))}
+        <Route path="/qr" element={<QR />} />
       </Routes>
     </AppShell>
   )

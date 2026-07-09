@@ -1,0 +1,144 @@
+/* astryx 토큰 기반 레이아웃, QR 코드 박스만 스캔용으로 흑백 고정 */
+.qr {
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  background: var(--color-background-body);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
+}
+
+.qr-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.qr-sub {
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-left: var(--spacing-2);
+}
+
+.qr-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-4);
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .qr-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.qr-panel {
+  padding: var(--spacing-4);
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-gray);
+  border-radius: var(--radius-container);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+.qr-meta {
+  display: flex;
+  gap: var(--spacing-2);
+}
+.qr-note {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.qr-out {
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  overflow: auto; /* 큰 QR 은 잘리지 않게 스크롤 */
+}
+.qr-empty {
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* 플레이그라운드: 날것 텍스트 → 폰트 렌더 (좌 입력 / 우 결과) */
+.qr-play {
+  gap: var(--spacing-3);
+}
+.qr-play-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-2);
+  flex-wrap: wrap;
+}
+.qr-play-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.qr-play-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3);
+  align-items: stretch;
+}
+@media (max-width: 720px) {
+  .qr-play-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.qr-play-in {
+  min-height: 180px;
+  box-sizing: border-box;
+  padding: var(--spacing-3);
+  font-family: var(--font-family-code);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  background: var(--color-background-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-gray);
+  border-radius: var(--radius-element);
+  resize: vertical;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.qr-play-out {
+  min-height: 180px;
+  box-sizing: border-box;
+  padding: var(--spacing-3);
+  border: 1px solid var(--color-border-gray);
+  font-family: 'qrfont-3L';
+  font-variant-ligatures: common-ligatures contextual;
+  font-feature-settings: 'calt' 1, 'liga' 1;
+  line-height: 1.9; /* QR 글리프가 크므로 줄 간격 넉넉히 (겹침/잔줄 방지) */
+  color: #000;
+  background: #fff;
+  border-radius: var(--radius-element);
+  white-space: pre; /* QR 안 깨지게 줄바꿈 금지, 넘치면 스크롤 */
+  overflow: auto;
+  resize: vertical;
+}
+
+/* QR 전용 폰트: 대괄호 텍스트를 OpenType GSUB 로 QR 모듈로 치환 */
+@font-face {
+  font-family: 'qrfont-3L';
+  src: url('./qrfont-3L.ttf') format('truetype');
+  font-display: swap;
+}
+.qr-code {
+  font-family: 'qrfont-3L';
+  /* 셰이핑 규칙(contextual/ligature)이 켜져 있어야 QR 로 합쳐짐 */
+  font-variant-ligatures: common-ligatures contextual;
+  font-feature-settings: 'calt' 1, 'liga' 1;
+  font-size: 12px; /* JS 슬라이더가 인라인으로 덮어씀 (기본값) */
+  line-height: 1;
+  /* 스캔 가능하도록 흑백 고정 + 여백(quiet zone) */
+  color: #000;
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  white-space: pre; /* 한 줄 유지 — 줄바꿈되면 QR 이 깨짐 */
+}
