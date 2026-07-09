@@ -76,7 +76,8 @@ function tokenizeLines(sql: string): Seg[][] {
   let id = 0
   return stripComments(sql)
     .split('\n')
-    .map((line) => {
+    .map((rawLine) => {
+      const line = rawLine.replace(/[ \t\r]+$/, '') // drop trailing spaces/tabs (messy hand-written SQL)
       const segs: Seg[] = []
       const re = /'(?:''|[^'])*'/g
       let last = 0

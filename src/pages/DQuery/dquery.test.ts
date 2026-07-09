@@ -56,4 +56,9 @@ assert.deepEqual(
   ["don''t"],
 )
 
+// trailing spaces/tabs are stripped (indentation kept)
+const tw = outputText(buildLines('SELECT A  \t\n     , B\t ', { style: 'A', varName: 'V_SQL', subs: {} }))
+assert.ok(tw.includes("V_SQL := V_SQL || 'SELECT A';"), 'trailing ws removed')
+assert.ok(tw.includes("V_SQL := V_SQL || '     , B';"), 'leading indent kept, trailing removed')
+
 console.log('dquery.ts: all checks passed ✅')
