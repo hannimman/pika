@@ -66,8 +66,7 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   border: 0;
-  overflow-y: auto;
-  scrollbar-gutter: stable;
+  overflow-y: scroll; /* both always reserve a scrollbar so they wrap identically */
 }
 .dq-in {
   z-index: 1;
@@ -82,11 +81,20 @@
   z-index: 0;
   color: transparent;
   pointer-events: none;
-  scrollbar-width: none;
 }
+/* identical scrollbar width on both → identical wrapping; the mirror's is invisible */
+.dq-in::-webkit-scrollbar,
 .dq-in-mirror::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+  width: 12px;
+}
+.dq-in::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--color-text-secondary) 45%, transparent);
+  border-radius: 6px;
+}
+.dq-in::-webkit-scrollbar-track,
+.dq-in-mirror::-webkit-scrollbar-thumb,
+.dq-in-mirror::-webkit-scrollbar-track {
+  background: transparent;
 }
 .dq-in-mline {
   border-radius: 4px;
