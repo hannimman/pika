@@ -3,7 +3,7 @@ import { TextInput } from '@astryxdesign/core/TextInput'
 import { ToggleButton, ToggleButtonGroup } from '@astryxdesign/core/ToggleButton'
 import { Button } from '@astryxdesign/core/Button'
 import { Badge } from '@astryxdesign/core/Badge'
-import { buildLines, outputText, findLiterals, type Style, type Subs } from './dquery'
+import { buildLines, outputText, type Style, type Subs } from './dquery'
 import './DQuery.css'
 
 export default function DQuery() {
@@ -12,13 +12,11 @@ export default function DQuery() {
   const [varName, setVarName] = useState('V_SQL')
   const [subs, setSubs] = useState<Subs>({})
   const [copied, setCopied] = useState(false)
-  const [hoverId, setHoverId] = useState<number | null>(null)
+  const [hoverVal, setHoverVal] = useState<string | null>(null)
   const [hoverLine, setHoverLine] = useState<number | null>(null)
   const [burning, setBurning] = useState(false)
 
   const lines = useMemo(() => buildLines(sql, { style, varName, subs }), [sql, style, varName, subs])
-  const literals = useMemo(() => findLiterals(sql), [sql])
-  const valueOf = (id: number) => literals.find((l) => l.id === id)?.value ?? ''
 
   const inRef = useRef<HTMLTextAreaElement>(null)
   const outRef = useRef<HTMLPreElement>(null)
@@ -71,21 +69,22 @@ export default function DQuery() {
     }
   }, [])
 
-  // click a literal in the output to toggle it into/out of a variable
-  const toggleLit = (id: number) =>
+  // click a literal in the output to toggle it into/out of a variable.
+  // keyed by the literal VALUE so edits elsewhere don't shift the mapping.
+  const toggleLit = (val: string) =>
     setSubs((s) => {
-      if (id in s) {
+      if (val in s) {
         const n = { ...s }
-        delete n[id]
+        delete n[val]
         return n
       }
-      return { ...s, [id]: 'P_VAR' + (Object.keys(s).length + 1) }
+      return { ...s, [val]: 'P_VAR' + (Object.keys(s).length + 1) }
     })
-  const setVar = (id: number, name: string) => setSubs((s) => ({ ...s, [id]: name }))
-  const removeSub = (id: number) =>
+  const setVar = (val: string, name: string) => setSubs((s) => ({ ...s, [val]: name }))
+  const removeSub = (val: string) =>
     setSubs((s) => {
       const n = { ...s }
-      delete n[id]
+      delete n[val]
       return n
     })
 
@@ -94,7 +93,7 @@ export default function DQuery() {
     setCopied(true)
     setTimeout(() => setCopied(false), 1200)
   }
-  const subIds = Object.keys(subs).map(Number)
+  const subVals = Object.keys(subs)
 
   // wrap the selected word in the input with single quotes (trim whitespace the
   // double-click often grabs, and skip if it's already quoted)
@@ -121,7 +120,7 @@ export default function DQuery() {
 
   // reset with a burn-away effect, then clear the input
   const reset = () => {
-    if (burning || (!sql && subIds.length === 0)) return
+    if (burning || (!sql && subVals.length === 0)) return
     setBurning(true)
     setTimeout(() => {
       setSql('')
@@ -155,7 +154,7 @@ export default function DQuery() {
             <span className="dq-panel-title">SQL 입력</span>
             <span className="dq-copy">
               <Button label="따옴표" variant="secondary" size="sm" onClick={addQuotes} tooltip="선택한 단어를 '..' 로 감쌉니다 (딸려온 공백은 제외)" />
-              <Button label="초기화" variant="ghost" size="sm" onClick={reset} isDisabled={!sql && subIds.length === 0} />
+              <Button label="초기화" variant="ghost" size="sm" onClick={reset} isDisabled={!sql && subVals.length === 0} />
             </span>
           </div>
           <div className="dq-in-box">
@@ -200,14 +199,15 @@ export default function DQuery() {
                 <div key={li} className={'dq-oline' + (ln.src !== null && ln.src === hoverLine ? ' lhi' : '')}>
                   {ln.parts.map((p, i) => {
                     if (p.t !== 'lit') return <span key={i}>{p.s}</span>
-                    const isVar = subs[p.id!] !== undefined
+                    const val = p.value!
+                    const isVar = subs[val] !== undefined
                     return (
                       <span
                         key={i}
-                        className={'dq-lit' + (isVar ? ' on' : '') + (isVar && hoverId === p.id ? ' hi' : '')}
-                        onClick={() => toggleLit(p.id!)}
-                        onMouseEnter={() => isVar && setHoverId(p.id!)}
-                        onMouseLeave={() => isVar && setHoverId(null)}
+                        className={'dq-lit' + (isVar ? ' on' : '') + (isVar && hoverVal === val ? ' hi' : '')}
+                        onClick={() => toggleLit(val)}
+                        onMouseEnter={() => isVar && setHoverVal(val)}
+                        onMouseLeave={() => isVar && setHoverVal(null)}
                         title="클릭: 변수화 토글"
                       >
                         {p.s}
@@ -221,33 +221,33 @@ export default function DQuery() {
         </section>
       </div>
 
-      {subIds.length > 0 && (
+      {subVals.length > 0 && (
         <section className="dq-panel dq-subs">
           <div className="dq-panel-head">
             <span className="dq-panel-title">치환 목록</span>
-            <Badge variant="info" label={String(subIds.length)} />
+            <Badge variant="info" label={String(subVals.length)} />
           </div>
           <div className="dq-sub-list">
-            {subIds.map((id) => (
+            {subVals.map((val) => (
               <div
-                className={'dq-sub' + (hoverId === id ? ' hi' : '')}
-                key={id}
-                onMouseEnter={() => setHoverId(id)}
-                onMouseLeave={() => setHoverId(null)}
+                className={'dq-sub' + (hoverVal === val ? ' hi' : '')}
+                key={val}
+                onMouseEnter={() => setHoverVal(val)}
+                onMouseLeave={() => setHoverVal(null)}
               >
-                <Badge variant="neutral" label={`''${valueOf(id)}''`} />
+                <Badge variant="neutral" label={`''${val}''`} />
                 <span className="dq-arrow">→</span>
                 <div className="dq-sub-input">
                   <TextInput
                     label="변수명"
                     isLabelHidden
-                    value={subs[id]}
-                    onChange={(v) => setVar(id, v)}
+                    value={subs[val]}
+                    onChange={(v) => setVar(val, v)}
                     size="sm"
                     placeholder="변수명"
                   />
                 </div>
-                <Button label="삭제" variant="ghost" size="sm" onClick={() => removeSub(id)} />
+                <Button label="삭제" variant="ghost" size="sm" onClick={() => removeSub(val)} />
               </div>
             ))}
           </div>

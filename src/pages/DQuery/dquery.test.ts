@@ -16,11 +16,22 @@ const a = outputText(buildLines(sql, { style: 'A', varName: 'V_SQL', subs: {} })
 assert.ok(a.includes("V_SQL := V_SQL || 'A.X = ''foo''';"))
 assert.ok(a.includes("V_SQL := V_SQL || 'B.Y = ''bar''';"))
 
-// Style A — variablize literal 0 only
-const av = outputText(buildLines(sql, { style: 'A', varName: 'V_SQL', subs: { 0: 'P_FOO' } }))
-assert.ok(av.includes("'''||P_FOO||'''"), 'variablized literal 0')
-assert.ok(!av.includes("''foo''"), 'literal 0 no longer doubled')
-assert.ok(av.includes("''bar''"), 'literal 1 still doubled')
+// Style A — variablize by value: only 'foo' becomes a variable
+const av = outputText(buildLines(sql, { style: 'A', varName: 'V_SQL', subs: { foo: 'P_FOO' } }))
+assert.ok(av.includes("'''||P_FOO||'''"), 'variablized value foo')
+assert.ok(!av.includes("''foo''"), 'foo no longer doubled')
+assert.ok(av.includes("''bar''"), 'bar still doubled')
+
+// regression: variable keyed by value survives a new literal inserted BEFORE it.
+// grab 'B-B3-07' as a var, then quote BIZ_SECT_CD earlier → var must stay on 'B-B3-07'.
+const before = "AND BIZ_SECT_CD = 200\nAND FEE_CD = 'B-B3-07'"
+const after = "AND BIZ_SECT_CD = '200'\nAND FEE_CD = 'B-B3-07'" // 200 now quoted (new literal, earlier)
+const sub = { 'B-B3-07': 'P_FEE' }
+const o1 = outputText(buildLines(before, { style: 'A', varName: 'V_SQL', subs: sub }))
+const o2 = outputText(buildLines(after, { style: 'A', varName: 'V_SQL', subs: sub }))
+assert.ok(o1.includes("'''||P_FEE||'''"), 'FEE variablized before edit')
+assert.ok(o2.includes("'''||P_FEE||'''"), 'FEE stays variablized after new literal inserted earlier')
+assert.ok(o2.includes("''200''"), 'newly quoted 200 is NOT stolen by the variable')
 
 // Style B — single string literal spanning newlines
 const b = outputText(buildLines(sql, { style: 'B', varName: 'V_SQL', subs: {} }))

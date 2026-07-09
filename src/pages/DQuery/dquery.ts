@@ -5,7 +5,9 @@
 // 입력은 "생 SQL"을 가정한다(이미 변환된 V_SQL||... 코드를 넣으면 이중 변환됨).
 
 export type Style = 'A' | 'B' | 'C'
-export type Subs = Record<number, string>
+// 리터럴 값(문자열) → 변수명. 위치(id)가 아니라 값으로 키를 잡아야
+// 앞쪽에 리터럴이 새로 끼어들어도 변수 매핑이 밀리지 않는다.
+export type Subs = Record<string, string>
 
 export interface Part {
   t: 'text' | 'lit'
@@ -112,7 +114,7 @@ function lineParts(line: Seg[], subs: Subs): Part[] {
   return line.map((seg) =>
     'text' in seg
       ? { t: 'text', s: seg.text }
-      : { t: 'lit', id: seg.litId, value: seg.value, s: renderLit(seg.value, subs[seg.litId]) },
+      : { t: 'lit', id: seg.litId, value: seg.value, s: renderLit(seg.value, subs[seg.value]) },
   )
 }
 
