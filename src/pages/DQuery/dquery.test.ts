@@ -61,4 +61,10 @@ const tw = outputText(buildLines('SELECT A  \t\n     , B\t ', { style: 'A', varN
 assert.ok(tw.includes("V_SQL := V_SQL || 'SELECT A';"), 'trailing ws removed')
 assert.ok(tw.includes("V_SQL := V_SQL || '     , B';"), 'leading indent kept, trailing removed')
 
+// multi-line block comment keeps line numbers aligned (src = raw line index)
+// raw lines: 0:A  1:/* c1  2: c2 */  3:B  → B stays at src 3
+const blk = buildLines('A\n/* c1\n c2 */\nB', { style: 'A', varName: 'V_SQL', subs: {} })
+const bLine = blk.find((l) => l.parts.some((p) => p.s.includes('B')))
+assert.equal(bLine?.src, 3, 'line after multi-line block comment keeps its raw index')
+
 console.log('dquery.ts: all checks passed ✅')

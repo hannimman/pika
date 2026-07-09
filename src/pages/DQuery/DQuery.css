@@ -227,6 +227,9 @@
 
 .dq-copy {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
 }
 .dq-arrow {
   color: var(--color-text-secondary);

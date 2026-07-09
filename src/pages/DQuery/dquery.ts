@@ -61,7 +61,10 @@ export function stripComments(sql: string): string {
     }
     if (c === '/' && c2 === '*') {
       i += 2
-      while (i < n && !(sql[i] === '*' && sql[i + 1] === '/')) i++
+      while (i < n && !(sql[i] === '*' && sql[i + 1] === '/')) {
+        if (sql[i] === '\n') out += '\n' // 개행은 보존 → 좌우 줄 번호 정렬 유지
+        i++
+      }
       i += 2 // */ 건너뜀
       continue
     }

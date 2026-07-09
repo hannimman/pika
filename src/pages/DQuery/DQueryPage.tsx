@@ -96,6 +96,29 @@ export default function DQuery() {
   }
   const subIds = Object.keys(subs).map(Number)
 
+  // wrap the selected word in the input with single quotes (trim whitespace the
+  // double-click often grabs, and skip if it's already quoted)
+  const addQuotes = () => {
+    const a = inRef.current
+    if (!a) return
+    const s = a.selectionStart
+    const e = a.selectionEnd
+    if (s === e) return
+    const raw = sql.slice(s, e)
+    const core = raw.trim()
+    if (!core || (core.startsWith("'") && core.endsWith("'"))) return
+    const leadWs = raw.slice(0, raw.length - raw.trimStart().length)
+    const trailWs = raw.slice(raw.trimEnd().length)
+    const wrapped = `${leadWs}'${core}'${trailWs}`
+    setSql(sql.slice(0, s) + wrapped + sql.slice(e))
+    const selStart = s + leadWs.length
+    const selEnd = selStart + core.length + 2
+    requestAnimationFrame(() => {
+      a.focus()
+      a.setSelectionRange(selStart, selEnd)
+    })
+  }
+
   // reset with a burn-away effect, then clear the input
   const reset = () => {
     if (burning || (!sql && subIds.length === 0)) return
@@ -131,6 +154,7 @@ export default function DQuery() {
           <div className="dq-panel-head">
             <span className="dq-panel-title">SQL 입력</span>
             <span className="dq-copy">
+              <Button label="따옴표" variant="secondary" size="sm" onClick={addQuotes} tooltip="선택한 단어를 '..' 로 감쌉니다 (딸려온 공백은 제외)" />
               <Button label="초기화" variant="ghost" size="sm" onClick={reset} isDisabled={!sql && subIds.length === 0} />
             </span>
           </div>
