@@ -2,7 +2,8 @@
   'use strict';
 
   // pika fork: 0.1.0 upstream + 주석 줄끝 공백 토큰검증 오탐 수정
-  const VERSION = '0.1.1-pika';
+  //            + "AS ( --주석" 뒤 SELECT 서브쿼리 인식(들여쓰기 드리프트) 수정
+  const VERSION = '0.1.2-pika';
 
   const KEYWORDS = new Set([
     'ACCESS', 'ADD', 'ALL', 'ALTER', 'AND', 'ANY', 'AS', 'ASC', 'AUDIT',
@@ -971,7 +972,12 @@
 
       if (token.type === 'punctuation') {
         if (token.raw === '(') {
-          const subquery = ['SELECT', 'WITH'].includes(nextUpper);
+          // pika: skip comments when peeking — "AS ( --cmt" + newline SELECT must still open a subquery,
+          // otherwise the indent stack drifts for the whole rest of the statement
+          let peek = next;
+          let peekIdx = i + 1;
+          while (peek && ['line_comment', 'block_comment', 'hint'].includes(peek.type)) peek = significant[++peekIdx];
+          const subquery = ['SELECT', 'WITH'].includes(upperToken(peek));
           const functionLike = previous && (isAtomToken(previous) || previous.raw === ')') && !['IN', 'EXISTS', 'VALUES', 'OVER', 'USING', 'ON', 'AS', 'INSERT'].includes(previousUpper);
           const spaceBeforeParen = !functionLike && previous && !['(', '.', ','].includes(previous.raw);
           if (spaceBeforeParen) {
