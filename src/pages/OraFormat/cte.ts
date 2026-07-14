@@ -9,6 +9,8 @@ const MAIN_KW = /^(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\b/i
 
 export function breakCteBoundaries(text: string, indentWidth = 4): string {
   if (!/^\s*WITH\b/i.test(text)) return text
+  // 첫 CTE 이름을 WITH 와 같은 줄로: "WITH\n    NAME" → "WITH NAME"
+  text = text.replace(/^(\s*WITH)[ \t]*\r?\n[ \t]*/i, '$1 ')
   const indent = ' '.repeat(indentWidth * 2)
   const n = text.length
   const spans: { start: number; end: number; rep: string }[] = []
@@ -50,7 +52,7 @@ export function breakCteBoundaries(text: string, indentWidth = 4): string {
         const cte = /^,\s*[A-Za-z_][\w$#]*\s+AS\s*\(/i.exec(rest)
         if (cte) {
           const identStart = k + /^,\s*/.exec(rest)![0].length
-          spans.push({ start: ws, end: identStart, rep: `\n${indent})\n${indent}, ` })
+          spans.push({ start: ws, end: identStart, rep: `\n${indent})\n, ` })
         } else if (MAIN_KW.test(rest)) {
           spans.push({ start: ws, end: k, rep: `\n${indent})\n` })
         }
