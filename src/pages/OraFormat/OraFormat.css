@@ -1,0 +1,129 @@
+/* astryx 토큰만 사용 → 시스템 라이트/다크 자동 대응 (하드코딩 색 없음) */
+.of {
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  background: var(--color-background-body);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
+}
+
+.of-opts {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-gray);
+  border-radius: var(--radius-container);
+}
+.of-linewidth {
+  width: 160px;
+}
+
+.of-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3);
+}
+.of-main .of-panel {
+  height: 56vh;
+  min-width: 0;
+}
+@media (max-width: 820px) {
+  .of-main {
+    grid-template-columns: 1fr;
+  }
+  .of-main .of-panel {
+    height: 44vh;
+  }
+}
+
+.of-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-gray);
+  border-radius: var(--radius-container);
+}
+.of-head {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-height: 34px;
+}
+.of-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.of-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.of-io {
+  flex: 1;
+  min-height: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: var(--spacing-2);
+  background: var(--color-background-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-gray);
+  border-radius: var(--radius-element);
+  font-family: var(--font-family-code);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  white-space: pre;
+  overflow: auto;
+  resize: none;
+}
+.of-io::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.of-foot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+.of-stats {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-code);
+}
+.of-diags {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+.of-diag {
+  font-size: 0.8rem;
+  padding: 6px 8px;
+  border-radius: var(--radius-inner);
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border-gray);
+}
+.of-diag-code {
+  font-weight: 700;
+  font-size: 0.68rem;
+  margin-right: var(--spacing-2);
+  color: var(--color-text-secondary);
+}
+.of-diag.error {
+  border-color: color-mix(in oklab, var(--color-text-red, #e5484d) 55%, transparent);
+}
+.of-diag.error .of-diag-code {
+  color: var(--color-text-red, #e5484d);
+}

@@ -8,8 +8,9 @@ import Embed from './pages/Embed'
 import Tetris from './pages/Tetris'
 import Quote from './pages/Quote/QuotePage'
 import DQuery from './pages/DQuery/DQueryPage'
+import OraFormat from './pages/OraFormat/OraFormatPage'
 import QR from './pages/QR/QRPage'
-import { HomeIcon, QuoteIcon, BlocksIcon, DbIcon } from './icons'
+import { HomeIcon, QuoteIcon, BlocksIcon, DbIcon, CodeIcon } from './icons'
 
 // One nav table drives both the menu and the routes.
 const NAV = [
@@ -17,6 +18,7 @@ const NAV = [
   { path: '/quote', label: '따옴표', icon: QuoteIcon, el: <Quote /> },
   { path: '/oracle', label: '변수', icon: 'wrench', el: <Embed src="https://hannimman.github.io/oracle-var-resolver/" title="oracle-var-resolver" /> },
   { path: '/dquery', label: '동적', icon: DbIcon, el: <DQuery /> },
+  { path: '/oraformat', label: '포맷', icon: CodeIcon, el: <OraFormat /> },
   { path: '/tetris', label: '벽돌', icon: BlocksIcon, el: <Tetris /> },
 ]
 

@@ -42,3 +42,11 @@ export const DbIcon = (p: SVGProps<SVGSVGElement>) => (
     <path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" />
   </svg>
 )
+
+// 포맷: 코드 꺾쇠 </>
+export const CodeIcon = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)}>
+    <path d="m8 8-4 4 4 4" />
+    <path d="m16 8 4 4-4 4" />
+  </svg>
+)
