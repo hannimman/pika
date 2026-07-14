@@ -1521,6 +1521,10 @@
       .filter((token) => !['whitespace', 'newline'].includes(token.type))
       .map((token) => {
         let value = normalizeEol(token.raw);
+        // pika: 주석은 포맷 시 줄 끝 공백이 제거되므로 비교에서도 무시 (문자열은 제외 — 내부 공백은 의미 있음)
+        if (['line_comment', 'block_comment', 'hint'].includes(token.type)) {
+          value = value.replace(/[ \t]+$/gm, '');
+        }
         if (token.type === 'word' && KEYWORDS.has(token.raw.toUpperCase()) && options.keywordCase !== 'preserve') {
           value = token.raw.toUpperCase();
         }
