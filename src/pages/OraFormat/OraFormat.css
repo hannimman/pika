@@ -39,6 +39,13 @@
   /* 슬라이더 라벨은 값이 같이 나오므로 살짝 더 강조 */
   color: var(--color-text-primary);
 }
+.of-opt-hint {
+  font-size: 0.66rem;
+  color: var(--color-text-secondary);
+}
+.of-opt-hint.warn {
+  color: var(--color-text-orange, #d98324);
+}
 
 .of-main {
   display: grid;

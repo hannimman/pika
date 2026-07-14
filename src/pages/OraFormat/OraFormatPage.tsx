@@ -119,9 +119,12 @@ export default function OraFormat() {
             <ToggleButton value="after" label="줄 끝" />
           </ToggleButtonGroup>
         </div>
-        <div className="of-opt of-linewidth" title="한 줄 최대 글자 수. 이 길이를 넘으면 줄바꿈 기준으로 삼습니다">
+        <div className="of-opt of-linewidth" title="한 줄 최대 글자 수. 이 길이를 넘으면 줄바꿈 기준으로 삼습니다. 최소변경 모드에서 가장 잘 적용됩니다">
           <span className="of-opt-label">줄 너비 {lineWidth}</span>
           <Slider label="줄 너비" isLabelHidden min={60} max={200} step={10} value={lineWidth} onChange={(v) => typeof v === 'number' && setLineWidth(v)} valueDisplay="none" />
+          <span className={'of-opt-hint' + (mode === 'canonical' ? ' warn' : '')}>
+            {mode === 'canonical' ? '완전정렬에선 효과 약함 → 최소변경 권장' : '최소변경 모드에서 잘 적용됨'}
+          </span>
         </div>
         <div className="of-opt" title="포맷 전후 내용(문자열·식별자)이 같은지 검사해서 다르면 원문을 그대로 돌려주는 안전장치. 켜두는 걸 권장">
           <span className="of-opt-label">안전장치</span>
