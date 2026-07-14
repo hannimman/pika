@@ -15,14 +15,29 @@
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
-  gap: var(--spacing-3);
+  gap: var(--spacing-3) var(--spacing-4);
   padding: var(--spacing-3);
   background: var(--color-background-card);
   border: 1px solid var(--color-border-gray);
   border-radius: var(--radius-container);
 }
+/* 각 옵션 = 라벨(위) + 컨트롤(아래) 세로 묶음. title 로 hover 설명 */
+.of-opt {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.of-opt-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
 .of-linewidth {
   width: 160px;
+}
+.of-linewidth .of-opt-label {
+  /* 슬라이더 라벨은 값이 같이 나오므로 살짝 더 강조 */
+  color: var(--color-text-primary);
 }
 
 .of-main {

@@ -30,7 +30,7 @@ export default function OraFormat() {
   const [mode, setMode] = useState('canonical')
   const [keywordCase, setKeywordCase] = useState('upper')
   const [indentWidth, setIndentWidth] = useState('4')
-  const [commaStyle, setCommaStyle] = useState('trailing')
+  const [commaStyle, setCommaStyle] = useState('leading')
   const [boolPos, setBoolPos] = useState('before')
   const [lineWidth, setLineWidth] = useState(100)
   const [verify, setVerify] = useState(true)
@@ -82,32 +82,51 @@ export default function OraFormat() {
   return (
     <div className="of" data-astryx-theme="matcha">
       <header className="of-opts">
-        <ToggleButtonGroup label="모드" type="single" size="sm" value={mode} onChange={(v) => typeof v === 'string' && setMode(v)}>
-          <ToggleButton value="canonical" label="정규" />
-          <ToggleButton value="conservative" label="보수" />
-        </ToggleButtonGroup>
-        <ToggleButtonGroup label="키워드" type="single" size="sm" value={keywordCase} onChange={(v) => typeof v === 'string' && setKeywordCase(v)}>
-          <ToggleButton value="upper" label="UPPER" />
-          <ToggleButton value="lower" label="lower" />
-          <ToggleButton value="preserve" label="유지" />
-        </ToggleButtonGroup>
-        <ToggleButtonGroup label="들여쓰기" type="single" size="sm" value={indentWidth} onChange={(v) => typeof v === 'string' && setIndentWidth(v)}>
-          <ToggleButton value="2" label="2" />
-          <ToggleButton value="4" label="4" />
-          <ToggleButton value="8" label="8" />
-        </ToggleButtonGroup>
-        <ToggleButtonGroup label="쉼표" type="single" size="sm" value={commaStyle} onChange={(v) => typeof v === 'string' && setCommaStyle(v)}>
-          <ToggleButton value="trailing" label="후행 a," />
-          <ToggleButton value="leading" label="선행 ,a" />
-        </ToggleButtonGroup>
-        <ToggleButtonGroup label="AND/OR" type="single" size="sm" value={boolPos} onChange={(v) => typeof v === 'string' && setBoolPos(v)}>
-          <ToggleButton value="before" label="앞" />
-          <ToggleButton value="after" label="뒤" />
-        </ToggleButtonGroup>
-        <div className="of-linewidth">
-          <Slider label={`줄너비 ${lineWidth}`} min={60} max={200} step={10} value={lineWidth} onChange={(v) => typeof v === 'number' && setLineWidth(v)} valueDisplay="none" />
+        <div className="of-opt" title="완전정렬: 기존 줄바꿈 무시하고 표준 형태로 재정렬 / 최소변경: 기존 줄바꿈 최대한 유지">
+          <span className="of-opt-label">정렬 방식</span>
+          <ToggleButtonGroup label="정렬 방식" isLabelHidden type="single" size="sm" value={mode} onChange={(v) => typeof v === 'string' && setMode(v)}>
+            <ToggleButton value="canonical" label="완전정렬" />
+            <ToggleButton value="conservative" label="최소변경" />
+          </ToggleButtonGroup>
         </div>
-        <CheckboxInput label="토큰 검증" size="sm" value={verify} onChange={setVerify} />
+        <div className="of-opt" title="SELECT·FROM 같은 키워드를 대문자/소문자로 통일하거나 그대로 둡니다">
+          <span className="of-opt-label">키워드</span>
+          <ToggleButtonGroup label="키워드" isLabelHidden type="single" size="sm" value={keywordCase} onChange={(v) => typeof v === 'string' && setKeywordCase(v)}>
+            <ToggleButton value="upper" label="대문자" />
+            <ToggleButton value="lower" label="소문자" />
+            <ToggleButton value="preserve" label="그대로" />
+          </ToggleButtonGroup>
+        </div>
+        <div className="of-opt" title="들여쓰기 한 단계당 공백 칸 수">
+          <span className="of-opt-label">들여쓰기</span>
+          <ToggleButtonGroup label="들여쓰기" isLabelHidden type="single" size="sm" value={indentWidth} onChange={(v) => typeof v === 'string' && setIndentWidth(v)}>
+            <ToggleButton value="2" label="2칸" />
+            <ToggleButton value="4" label="4칸" />
+            <ToggleButton value="8" label="8칸" />
+          </ToggleButtonGroup>
+        </div>
+        <div className="of-opt" title="컬럼을 여러 줄로 나눌 때 쉼표를 줄 끝(a,)에 둘지 줄 앞(,a)에 둘지">
+          <span className="of-opt-label">쉼표 위치</span>
+          <ToggleButtonGroup label="쉼표 위치" isLabelHidden type="single" size="sm" value={commaStyle} onChange={(v) => typeof v === 'string' && setCommaStyle(v)}>
+            <ToggleButton value="trailing" label="줄 끝 a," />
+            <ToggleButton value="leading" label="줄 앞 ,a" />
+          </ToggleButtonGroup>
+        </div>
+        <div className="of-opt" title="WHERE 조건을 여러 줄로 나눌 때 AND/OR 를 줄 앞에 둘지 줄 끝에 둘지">
+          <span className="of-opt-label">AND/OR 위치</span>
+          <ToggleButtonGroup label="AND/OR 위치" isLabelHidden type="single" size="sm" value={boolPos} onChange={(v) => typeof v === 'string' && setBoolPos(v)}>
+            <ToggleButton value="before" label="줄 앞" />
+            <ToggleButton value="after" label="줄 끝" />
+          </ToggleButtonGroup>
+        </div>
+        <div className="of-opt of-linewidth" title="한 줄 최대 글자 수. 이 길이를 넘으면 줄바꿈 기준으로 삼습니다">
+          <span className="of-opt-label">줄 너비 {lineWidth}</span>
+          <Slider label="줄 너비" isLabelHidden min={60} max={200} step={10} value={lineWidth} onChange={(v) => typeof v === 'number' && setLineWidth(v)} valueDisplay="none" />
+        </div>
+        <div className="of-opt" title="포맷 전후 내용(문자열·식별자)이 같은지 검사해서 다르면 원문을 그대로 돌려주는 안전장치. 켜두는 걸 권장">
+          <span className="of-opt-label">안전장치</span>
+          <CheckboxInput label="내용 보존 검사" size="sm" value={verify} onChange={setVerify} />
+        </div>
       </header>
 
       <div className="of-main">

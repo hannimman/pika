@@ -6,6 +6,7 @@ const TOOLS = [
   { to: '/quote', emoji: '❝', title: '따옴표', desc: '따옴표 마법사', tag: 'TOOL' },
   { to: '/oracle', emoji: '🔮', title: '변수', desc: 'Oracle 바인드 변수 치환기', tag: 'IFRAME' },
   { to: '/dquery', emoji: '🗄️', title: '동적', desc: 'SQL → 동적쿼리 변환기', tag: 'TOOL' },
+  { to: '/oraformat', emoji: '🧹', title: '포맷', desc: 'Oracle SQL/PL-SQL 포맷터', tag: 'TOOL' },
   { to: '/tetris', emoji: '💫', title: '벽돌', desc: '벽돌공장', tag: 'GAME' },
 ]
 
