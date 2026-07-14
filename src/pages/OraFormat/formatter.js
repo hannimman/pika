@@ -3,7 +3,8 @@
 
   // pika fork: 0.1.0 upstream + 주석 줄끝 공백 토큰검증 오탐 수정
   //            + "AS ( --주석" 뒤 SELECT 서브쿼리 인식(들여쓰기 드리프트) 수정
-  const VERSION = '0.1.2-pika';
+  //            + OVER(...) 함수 괄호 안 ORDER/GROUP BY 인라인 처리
+  const VERSION = '0.1.3-pika';
 
   const KEYWORDS = new Set([
     'ACCESS', 'ADD', 'ALL', 'ALTER', 'AND', 'ANY', 'AS', 'ASC', 'AUDIT',
@@ -1349,7 +1350,15 @@
       }
 
       if (clause) {
-        if (clause.kind === 'GROUP_BY') startClause('GROUP_BY', clause.count, i, 'newline-content');
+        // pika: OVER (PARTITION BY ... ORDER BY ...) 같은 함수 괄호 안에서는
+        // ORDER/GROUP BY 가 문장 절이 아니므로 줄바꿈 없이 인라인 처리
+        const inFnParen = state.parenStack.length > 0 && !state.parenStack[state.parenStack.length - 1].subquery;
+        if (inFnParen && ['GROUP_BY', 'ORDER_BY'].includes(clause.kind)) {
+          writer.space();
+          writePhrase(writer, significant, i, clause.count, options);
+          writer.space();
+        }
+        else if (clause.kind === 'GROUP_BY') startClause('GROUP_BY', clause.count, i, 'newline-content');
         else if (clause.kind === 'ORDER_BY') startClause('ORDER_BY', clause.count, i, 'newline-content');
         else if (clause.kind === 'CONNECT_BY') startClause('CONNECT_BY', clause.count, i, 'same-line');
         else if (clause.kind === 'START_WITH') startClause('START_WITH', clause.count, i, 'same-line');
