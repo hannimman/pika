@@ -1,7 +1,8 @@
 (function (global) {
   'use strict';
 
-  const VERSION = '0.1.0';
+  // pika fork: 0.1.0 upstream + 주석 줄끝 공백 토큰검증 오탐 수정
+  const VERSION = '0.1.1-pika';
 
   const KEYWORDS = new Set([
     'ACCESS', 'ADD', 'ALL', 'ALTER', 'AND', 'ANY', 'AS', 'ASC', 'AUDIT',
