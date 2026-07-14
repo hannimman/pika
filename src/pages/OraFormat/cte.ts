@@ -50,7 +50,7 @@ export function breakCteBoundaries(text: string, indentWidth = 4): string {
         const cte = /^,\s*[A-Za-z_][\w$#]*\s+AS\s*\(/i.exec(rest)
         if (cte) {
           const identStart = k + /^,\s*/.exec(rest)![0].length
-          spans.push({ start: ws, end: identStart, rep: `\n${indent})\n, ` })
+          spans.push({ start: ws, end: identStart, rep: `\n${indent})\n${indent}, ` })
         } else if (MAIN_KW.test(rest)) {
           spans.push({ start: ws, end: k, rep: `\n${indent})\n` })
         }
