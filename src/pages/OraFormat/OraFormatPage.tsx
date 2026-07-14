@@ -6,6 +6,7 @@ import { Badge } from '@astryxdesign/core/Badge'
 import { CheckboxInput } from '@astryxdesign/core/CheckboxInput'
 import formatter from './formatter.js'
 import { breakCteBoundaries } from './cte'
+import { alignInsertColumns } from './insert'
 import './OraFormat.css'
 
 // vendored engine (oracle-formatter-web) — 전부 브라우저에서 실행, 외부 호출 0
@@ -52,6 +53,8 @@ export default function OraFormat() {
       })
       // WITH 절 CTE 경계를 제 줄로 분리 (공백만 재배치 → 안전)
       r.output = breakCteBoundaries(r.output, Number(indentWidth))
+      // INSERT INTO 컬럼 목록을 SELECT 절처럼 세로 정렬 (공백만 재배치 → 안전)
+      r.output = alignInsertColumns(r.output, Number(indentWidth), commaStyle as 'leading' | 'trailing')
       return r
     } catch (e) {
       return {
