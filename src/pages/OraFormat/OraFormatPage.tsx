@@ -5,6 +5,7 @@ import { Button } from '@astryxdesign/core/Button'
 import { Badge } from '@astryxdesign/core/Badge'
 import { CheckboxInput } from '@astryxdesign/core/CheckboxInput'
 import formatter from './formatter.js'
+import { breakCteBoundaries } from './cte'
 import './OraFormat.css'
 
 // vendored engine (oracle-formatter-web) — 전부 브라우저에서 실행, 외부 호출 0
@@ -40,7 +41,7 @@ export default function OraFormat() {
   const result = useMemo<FmtResult | null>(() => {
     if (!sql.trim()) return null
     try {
-      return OF.format(sql, {
+      const r = OF.format(sql, {
         mode,
         keywordCase,
         indentWidth: Number(indentWidth),
@@ -49,6 +50,9 @@ export default function OraFormat() {
         lineWidth,
         verifyTokens: verify,
       })
+      // WITH 절 CTE 경계를 제 줄로 분리 (공백만 재배치 → 안전)
+      r.output = breakCteBoundaries(r.output, Number(indentWidth))
+      return r
     } catch (e) {
       return {
         output: sql,
