@@ -1,0 +1,250 @@
+/* FolioMD manual — astryx tokens only, so light/dark follow the theme */
+.folio {
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: clamp(24px, 5vw, 64px) clamp(20px, 5vw, 72px) 120px;
+  background:
+    radial-gradient(90% 60% at 100% 0%, color-mix(in oklab, var(--color-text-green) 12%, transparent), transparent 60%),
+    radial-gradient(60% 40% at 0% 10%, color-mix(in oklab, var(--color-accent) 8%, transparent), transparent 70%);
+}
+
+/* ---------- hero ---------- */
+.folio-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 56px);
+  max-width: 1200px;
+  margin: 0 auto clamp(40px, 7vh, 80px);
+}
+
+.folio-eyebrow {
+  margin: 0 0 14px;
+  font-family: var(--font-family-code);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  color: var(--color-text-secondary);
+}
+
+.folio-title {
+  margin: 0;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  line-height: 0.95;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  color: var(--color-text-primary);
+}
+.folio-title span {
+  color: var(--color-text-green);
+  margin-left: 0.04em;
+}
+
+.folio-tagline {
+  margin-top: 22px;
+  max-width: 40ch;
+  font-size: 1.08rem;
+  color: var(--color-text-secondary);
+}
+
+.folio-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-top: 28px;
+}
+
+.folio-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: var(--radius-element);
+  border: 1px solid var(--color-border-gray);
+  background: var(--color-background-card);
+  color: var(--color-text-primary);
+  font: 600 0.9rem var(--font-family-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.folio-btn:hover { transform: translateY(-1px); border-color: var(--color-text-green); }
+.folio-btn-primary {
+  background: var(--color-text-green);
+  border-color: transparent;
+  color: var(--color-background-body);
+}
+
+.folio-hero-shot {
+  padding: 0;
+  border: 1px solid var(--color-border-gray);
+  border-radius: var(--radius-container);
+  overflow: hidden;
+  background: var(--color-background-card);
+  cursor: zoom-in;
+  transform: perspective(1400px) rotateY(-6deg) rotateX(2deg);
+  box-shadow:
+    0 30px 60px -20px color-mix(in oklab, var(--color-text-primary) 35%, transparent),
+    0 0 0 6px color-mix(in oklab, var(--color-text-green) 10%, transparent);
+  transition: transform 0.4s ease;
+}
+.folio-hero-shot:hover { transform: none; }
+.folio-hero-shot img { display: block; width: 100%; height: auto; }
+
+/* ---------- body: sticky TOC + content ---------- */
+.folio-body {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.folio-toc {
+  position: sticky;
+  top: var(--spacing-4);
+  align-self: start;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+.folio-toc-title {
+  margin: 0 0 10px 10px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--color-text-green);
+}
+.folio-toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--color-border-gray); }
+.folio-toc button {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-left: -1px;
+  padding: 7px 10px;
+  border: 0;
+  border-left: 2px solid transparent;
+  background: none;
+  color: var(--color-text-secondary);
+  font: 0.86rem/1.35 var(--font-family-body);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.folio-toc button:hover { color: var(--color-text-primary); }
+.folio-toc button.is-active {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  border-left-color: var(--color-text-green);
+}
+.folio-toc-num { font-family: var(--font-family-code); font-size: 0.75rem; opacity: 0.6; padding-top: 1px; }
+
+.folio-content { max-width: 820px; min-width: 0; }
+
+.folio-section {
+  scroll-margin-top: var(--spacing-4);
+  padding: clamp(24px, 3vw, 36px);
+  margin-bottom: var(--spacing-4);
+  border: 1px solid var(--color-border-gray);
+  border-radius: var(--radius-container);
+  background: color-mix(in oklab, var(--color-background-card) 88%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.folio-h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: 0 0 20px;
+  font-size: clamp(1.4rem, 2.6vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+.folio-h2-num {
+  font-family: var(--font-family-code);
+  font-size: 0.8em;
+  color: var(--color-text-green);
+}
+
+/* terminal command box: whole command wraps (copy uses the raw string), labeled copy button */
+.folio-cmd {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--spacing-3);
+  margin: var(--spacing-3) 0;
+  padding: 14px 14px 14px 16px;
+  border: 1px solid color-mix(in oklab, var(--color-text-green) 45%, var(--color-border-gray));
+  border-radius: var(--radius-inner);
+  background: color-mix(in oklab, var(--color-background-body) 70%, black);
+}
+.folio-cmd-prompt {
+  font: 700 0.85rem var(--font-family-code);
+  color: var(--color-text-green);
+}
+.folio-cmd code {
+  font: 0.86rem/1.6 var(--font-family-code);
+  color: var(--color-text-primary);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.folio-cmd-copy {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: var(--radius-element);
+  background: var(--color-text-green);
+  color: var(--color-background-body);
+  font: 700 0.85rem var(--font-family-body);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+.folio-cmd-copy:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.folio-cmd-copy:active { transform: none; }
+.folio-cmd-copy.is-ok { background: var(--color-text-primary); }
+
+/* screenshots inside the manual */
+.folio-content img {
+  display: block;
+  max-width: 100%;
+  margin: 4px auto;
+  border: 1px solid var(--color-border-gray);
+  border-radius: var(--radius-inner);
+  box-shadow: 0 14px 30px -18px color-mix(in oklab, var(--color-text-primary) 40%, transparent);
+  cursor: zoom-in;
+  transition: transform 0.2s ease;
+}
+.folio-content img:hover { transform: scale(1.01); }
+
+/* ---------- zoom overlay ---------- */
+.folio-zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  padding: 4vh 4vw;
+  background: color-mix(in oklab, black 72%, transparent);
+  backdrop-filter: blur(4px);
+  cursor: zoom-out;
+  animation: folio-fade 0.18s ease;
+}
+.folio-zoom img {
+  max-width: 100%;
+  max-height: 86vh;
+  border-radius: var(--radius-inner);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+.folio-zoom p { margin: 0; color: white; font: 0.9rem var(--font-family-body); opacity: 0.85; }
+@keyframes folio-fade { from { opacity: 0; } }
+
+/* ---------- narrow screens ---------- */
+@media (max-width: 900px) {
+  .folio-hero { grid-template-columns: 1fr; }
+  .folio-hero-shot { transform: none; }
+  .folio-body { grid-template-columns: 1fr; }
+  .folio-toc { position: static; max-height: none; }
+  .folio-toc ol { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); border-left: 0; }
+}

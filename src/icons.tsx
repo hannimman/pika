@@ -50,3 +50,11 @@ export const CodeIcon = (p: SVGProps<SVGSVGElement>) => (
     <path d="m16 8 4 4-4 4" />
   </svg>
 )
+
+// FolioMD 설명서: 펼친 책
+export const BookIcon = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)}>
+    <path d="M12 6c-2-1.5-5-2-8-1.5V19c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V4.5C17 4 14 4.5 12 6z" />
+    <path d="M12 6v14.5" />
+  </svg>
+)

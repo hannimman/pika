@@ -2,7 +2,7 @@
 
 개인 놀이터 사이트. **React + Vite + TypeScript**로 재작성했고, UI는 [astryx](https://astryx.atmeta.com) 디자인 시스템(Meta 오픈소스)으로 만듭니다.
 
-메뉴: 따옴표(QuoteMaker) · Oracle 변수(oracle-var-resolver) · 벽돌(Tetris) · astryx 쇼케이스
+메뉴: 따옴표(QuoteMaker) · 변수(oracle-var-resolver) · 동적(SQL → 동적쿼리) · 포맷(Oracle SQL 포맷터) · FolioMD(사용 설명서) · 벽돌(Tetris)
 (이전 Vue 버전의 DateWizard는 제거됨)
 
 ## 개발

@@ -7,6 +7,7 @@ const TOOLS = [
   { to: '/oracle', emoji: '🔮', title: '변수', desc: 'Oracle 바인드 변수 치환기', tag: 'IFRAME' },
   { to: '/dquery', emoji: '🗄️', title: '동적', desc: 'SQL → 동적쿼리 변환기', tag: 'TOOL' },
   { to: '/oraformat', emoji: '🧹', title: '포맷', desc: 'Oracle SQL/PL-SQL 포맷터', tag: 'TOOL' },
+  { to: '/folio', emoji: '📘', title: 'FolioMD', desc: 'FolioMD 사용 설명서', tag: 'DOCS' },
   { to: '/tetris', emoji: '💫', title: '벽돌', desc: '벽돌공장', tag: 'GAME' },
 ]
 
@@ -22,7 +23,7 @@ export default function Home() {
             <path fill="currentColor" d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" />
           </svg>
         </h1>
-        <p className="home-tagline">별거 없는 도구 몇 개랑 게임 하나.</p>
+        <p className="home-tagline">별거 없는 도구 몇 개, 설명서 하나, 게임 하나.</p>
       </section>
 
       <section className="home-tools">
